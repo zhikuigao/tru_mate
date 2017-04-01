@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.SysAppLogMapper" >
+  <resultMap id="BaseResultMap" type="com.jws.app.operater.model.SysAppLog" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="request" property="request" jdbcType="VARCHAR" />
+    <result column="response" property="response" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <insert id="logInsert" parameterType="com.jws.app.operater.model.SysAppLog" >
+    insert into tb_sys_app_log (id, source, request, 
+      create_time
+      )
+    values (#{id,jdbcType=CHAR}, #{source,jdbcType=VARCHAR}, #{request,jdbcType=VARCHAR}, NOW())
+  </insert>
+  
+  <update id="logUpdateByPrimaryKey" parameterType="com.jws.app.operater.model.SysAppLog" >
+    update tb_sys_app_log   set
+      update_time = NOW(),
+      response = #{response}
+    where id = #{id}
+  </update>
+</mapper>

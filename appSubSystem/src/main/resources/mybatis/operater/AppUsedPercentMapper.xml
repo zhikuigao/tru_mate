@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.AppUsedPercentMapper" >
+ <!-- <resultMap id="BaseResultMap" type="mysql.AppUsedPercent" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="app_name" property="appName" jdbcType="VARCHAR" />
+    <result column="day_use" property="dayUse" jdbcType="DATE" />
+    <result column="duration" property="duration" jdbcType="REAL" />
+    <result column="use_percent" property="usePercent" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>  
+ 
+  <sql id="Base_Column_List" >
+    id, user_id, type, app_name, day_use, duration, use_percent, create_time, update_time
+  </sql> -->
+  
+  <select id="getMaxIdByUserId" parameterType="string" resultType="int">
+  	select max(id) from tb_app_used_percent where user_id = #{userId}
+  </select>
+  
+  <select id="queryAppPercentYes" resultType="map" parameterType="map" >
+  	select  app_name  appName, duration , use_percent usePercent, type
+    from tb_app_used_percent
+    where user_id = #{userId} and day_use = #{day} and type = '0'
+    order by use_percent desc
+  </select>
+  <select id="queryAppPercentOther" resultType="map" parameterType="map" >
+    select  app_name  appName, duration , use_percent usePercent, type
+    from tb_app_used_percent
+    where user_id = #{userId} and create_time &gt; #{day} and type in (1,2)
+    order by use_percent desc
+  </select>
+ 
+  <insert id="batchInsertAppUsedPercent" parameterType="list" >
+    insert into tb_app_used_percent (user_id, type, 
+      app_name, day_use, duration, 
+      use_percent, create_time
+      )
+    values 
+    <foreach collection="list" item="appUsedPercent" separator=",">
+	    ( #{appUsedPercent.userId}, #{appUsedPercent.type}, 
+	      #{appUsedPercent.appName}, #{appUsedPercent.dayUse}, #{appUsedPercent.duration}, 
+	      #{appUsedPercent.usePercent}, NOW()
+	      )
+     </foreach>
+  </insert>
+  <sql id="Base_Column_List" >
+    id, user_id, app_name, duration, hz, day_use, create_time, update_time
+  </sql>
+  
+  <select id="queryAppUsedYes" resultType="com.jws.app.operater.model.AppUsedYesterday" parameterType="map" >
+    select  
+    	id, user_id userId, trim(app_name) appName, duration, hz, day_use dayUse, 
+    	create_time createTime, update_time updateTime
+    from tb_app_used_origin_yes
+    where duration>3599 and  day_use between #{start} and #{end} 
+    order by duration desc
+  </select>
+  
+ 
+</mapper>

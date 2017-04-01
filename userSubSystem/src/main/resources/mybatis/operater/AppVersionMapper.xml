@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.AppVersionMapper" >
+  <resultMap id="BaseResultMap" type="com.jws.app.operater.model.AppVersion" >
+    <result column="id" property="id" jdbcType="CHAR" />
+    <result column="app_name" property="appName" jdbcType="VARCHAR" />
+    <result column="version_num" property="versionNum" jdbcType="VARCHAR" />
+    <result column="version_serial" property="versionSerial" jdbcType="INTEGER" />
+    <result column="use_type" property="useType" jdbcType="VARCHAR" />
+    <result column="file_type" property="fileType" jdbcType="VARCHAR" />
+    <result column="update_flag" property="updateFlag" jdbcType="VARCHAR" />
+    <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="creater" property="creater" jdbcType="CHAR" />
+    <result column="updater" property="updater" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.jws.app.operater.model.AppVersion" extends="BaseResultMap" >
+    <result column="version_desc_zh" property="versionDescZh" jdbcType="LONGVARCHAR" />
+    <result column="version_desc_en" property="versionDescEn" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, app_name, version_num, version_serial, use_type, update_flag, file_type, file_url, status, 
+    creater, updater, create_time, update_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    version_desc_zh, version_desc_en
+  </sql>
+  <!-- 查询最新版本信息 -->
+  <select id="selectNewestVersions" resultType="map" parameterType="com.jws.app.operater.model.AppVersion" >
+  	SELECT id, app_name appName, version_num versionNum, version_serial versionSerial,file_type fileType, file_url fileUrl,
+  				  version_desc_zh versionDescZh,version_desc_en versionDescEn, update_flag updateFlag,
+  				  create_time createTime
+	FROM tb_all_apply_version
+	WHERE status = '0'
+		AND app_name = #{appName}
+		AND use_type = #{useType}
+	ORDER BY version_serial desc
+	LIMIT 2
+  </select> 
+  <!-- 查询版本序号 -->
+  <select id="selectVersionSerial" parameterType="com.jws.app.operater.model.AppVersion" resultType="integer">
+ 	SELECT version_serial  versionSerial
+	FROM tb_all_apply_version
+	WHERE status = '0'
+		AND app_name = #{appName}
+		AND version_num = #{versionNum}
+		AND use_type = #{useType}
+	LIMIT 1
+  </select>
+  <!-- 查询所有未监控的数据 -->
+  <select id="queryVersionList" parameterType="com.jws.app.operater.model.AppVersion" resultType="map">
+  	select id, CONCAT(app_name,version_num,'更新') title,file_url url,
+  		DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') createTime,
+  		version_desc_zh content,version_desc_en contentEn, ifnull(version_desc_img_zh,'') imgZh,
+  		 ifnull(version_desc_img_en,'') imgEn
+  	from  tb_all_apply_version where monitor_status=#{monitorStatus} and file_type=#{fileType}
+  	and use_type = #{useType}
+  </select>
+ <!-- 批量更新监控状态 -->
+  <update id="batchUpdateStatus" parameterType="list">
+  	update tb_all_apply_version
+  	set monitor_status='1',
+  		update_time = NOW()
+  	where monitor_status='0' and id in 
+  	<foreach collection="ids" item="id" open="(" separator="," close=")">
+  		#{id}
+  	</foreach>
+  </update>
+  
+  <insert id="insert" parameterType="com.jws.app.operater.model.AppVersion">
+  insert into tb_all_apply_version  (
+  	id, app_name, version_num, version_serial, use_type, file_type, update_flag, file_url, 
+  	version_desc_zh, version_desc_en, create_time, version_desc_img_zh,version_desc_img_en
+  ) values(
+  	#{id}, #{appName}, #{versionNum}, #{versionSerial}, 
+  	#{useType}, #{fileType}, 
+  	#{updateFlag}, #{fileUrl}, #{versionDescZh}, #{versionDescEn}, NOW() , #{versionDescImgZh},#{versionDescImgEn}
+  )
+  </insert>
+  
+  <select id="getTotalVersion" parameterType="com.jws.app.operater.model.AppVersion" resultType="int">
+  	select count(id) from tb_all_apply_version where status = 0 
+  	<if test="null != useType">
+  		and use_type = #{useType}
+  	</if>
+  	<if test="null != fileType">
+  		and file_type = #{fileType}
+  	</if>
+  </select>
+   
+   <select id="getVersionByPage" parameterType="com.jws.app.operater.model.AppVersion" resultType="map">
+   		select  id , CONCAT(app_name,version_num,'更新') title, create_time createTime
+   		from tb_all_apply_version where 'status' = 0
+   		<if test="null != useType">
+	  		and use_type = #{useType}
+	  	</if>
+	  	<if test="null != fileType">
+	  		and file_type = #{fileType}
+	  	</if>
+	  	order by version_serial desc 
+	  	limit #{pageFrom},#{pageNum}
+   </select> 
+   
+   <select id="getVersionInfo" parameterType="string" resultType="map">
+   	select  id , CONCAT(app_name,version_num,'更新') title,ifnull(version_desc_img_zh,'') contentZh,
+   			 ifnull(version_desc_img_en,'') contentEn, status
+   	from  tb_all_apply_version
+   	where id = #{id}
+   
+   </select>
+</mapper>

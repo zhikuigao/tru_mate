@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.SearchKeyMapper" >
+  <resultMap id="BaseResultMap" type="com.jws.app.operater.model.SearchKey" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="user_id" property="userId" jdbcType="CHAR" />
+    <result column="key_word" property="keyWord" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, user_id, key_word, create_time, update_time
+  </sql>
+  
+  <!-- 保存搜索条件 -->
+  <insert id="saveSearchKey" parameterType="com.jws.app.operater.model.SearchKey" >
+    insert into tb_search_key (id, user_id, key_word, create_time, update_time)
+    values (#{id,jdbcType=CHAR}, #{userId,jdbcType=CHAR}, #{keyWord,jdbcType=VARCHAR}, NOW(), NOW())
+  </insert>
+  
+  <!-- 根据userId & keyWord 分页查询 搜索记录 -->
+  <select id="querySearchKeyByUserId" resultMap="BaseResultMap" parameterType="map">
+  	SELECT <include refid="Base_Column_List" /> 
+  	FROM tb_search_key t
+  	WHERE 
+  	t.user_id = #{map.userId}
+  	<if test="map.keyWord != null">
+  	AND t.key_word LIKE #{map.keyWord}
+  	</if>
+	ORDER BY t.create_time desc
+	LIMIT #{map.pageFrom}, #{map.pageNum}
+  </select>
+  
+  <!--根据userId & keyWord 统计KeyHistory总数 -->
+  <select id="countKeyHistory" resultType="java.lang.Integer">
+    SELECT count(id)
+    FROM tb_search_key 
+	WHERE user_id = #{userId}
+	<if test="keyWord != null">
+  	AND key_word LIKE #{keyWord}
+  	</if>
+  </select>
+  
+  <!-- 批量保存searchKeys -->
+  <insert id="saveSearchKeys" parameterType="java.util.List">
+  	INSERT INTO tb_search_key (id, user_id, key_word, create_time, update_time ) 
+	<foreach collection="searchKeys" item="item" index="index" separator="UNION ALL">
+  	  SELECT REPLACE(UUID(),'-',''), #{item.userId}, #{item.keyWord}, #{item.createTime}, NOW()
+    </foreach>
+  </insert>
+
+</mapper>

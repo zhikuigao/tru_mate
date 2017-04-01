@@ -1,0 +1,82 @@
+@charset "utf-8";
+body,div,ol,ul,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,p,form,fieldset,legend,input,hr,span{margin:0; padding:0;}
+h1,h2,h3,h4,h5,h6{ font-size:100%; font-weight:normal;}
+ol,ul{ list-style:none;}
+/*,"Times New Roman", Times, serif,"宋体"*/
+body{
+    font-family:"微软雅黑","Microsoft YaHei";
+    background-color: #f5f5f5;
+    position: relative;
+}
+
+*{
+    cursor:default;
+    //禁用文本选择
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    user-select:none;
+}
+
+input[type=text], input[type=password],textarea{
+    cursor: text;
+}
+.clickContent{
+	cursor:pointer;
+}
+.noneBut{
+    outline: none;
+    background-color:transparent;
+    border:0px;
+}
+.hiddeninfo, .hiddenInfo{
+	display: none;
+}
+
+#head{
+    width: 100%;
+    height: 80px;
+    line-height: 80px;
+    background-color: #3d9bff;
+    text-align: center;
+}
+#head >p{
+    color: #ffffff;
+    text-align: center;
+    font-size: 26px;
+}
+#head >span{
+    margin-top: -80px;
+    float: right;
+    color: #ffffff ;
+    padding: 5px 10px;
+    cursor:pointer;
+    font-size: 18px;
+}
+#head >span:nth-child(2){
+    margin-right: 200px;
+}
+#link{
+    position:fixed;
+    bottom: 0px;
+    z-index: 90;
+    padding: 20px 0;
+    background-color: #3d9bff;
+    text-align: center;
+    width: 100%;
+}
+#link >a{
+    color: #ffffff;
+    cursor: pointer;
+    margin: 0 20px;
+    text-decoration: none;
+}
+#erwerma{
+    position: fixed;
+    z-index: 90;
+    right: 0px;
+    bottom: 80px;
+    width: 180px;
+    height: 180px;
+    background: url("imgs/erweima.jpg") center no-repeat;
+}
+

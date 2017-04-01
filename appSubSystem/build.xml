@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<project name="appsystem" basedir="." default="makewar">  
+
+    <property name="classpath_lib" value="D:\soft\myeclipse_jdk_compile\com.sun.java.jdk7.win32.x86_64_1.7.0.u45\jre\lib\ext" />  
+
+    <property name="sources" value="${basedir}/src"/>    
+
+    <path id="classpath">    
+
+        <fileset dir="${classpath_lib}">    
+
+            <include name="*.jar"/>    
+
+        </fileset>    
+
+    </path>    
+
+    <property name="debuglevel" value="source,lines,vars"/>  
+
+    <property name="target" value="1.6"/>  
+
+    <property name="source" value="1.6"/>  
+
+    <target name="init">  
+    	<delete dir="${basedir}/build" /> 
+        <property name="build" value="build/destination/webapp"></property>  
+
+        <property name="src" value="src"></property>  
+
+        <mkdir dir="${build}"/>  
+
+        <mkdir dir="${build}\WEB-INF"/>  
+
+        <mkdir dir="${build}\WEB-INF\classes"/>  
+
+        <mkdir dir="${build}\WEB-INF\lib"/>  
+
+        <copy todir="${build}">  
+        	 <fileset dir="${basedir}/src/main/webapp"> 
+            	<include name="**/**.*" />  
+                <exclude name="**/*.jar"/>  
+                <exclude name="**/*.class"/>
+            </fileset>
+        </copy>
+    	<copy todir="${build}\WEB-INF\classes">  
+            <fileset dir="${basedir}/src/main/resources"> 
+            	<include name="**/**.*" />  
+                <exclude name="**/*.jar"/>  
+                <exclude name="**/*.class"/>
+            </fileset>
+        </copy>  
+
+    </target>  
+
+    <target name="complie" depends="init">    
+        <javac srcdir="${src}" destdir="${build}/WEB-INF/classes"  encoding="UTF-8" 
+        	classpath="classpath"
+        	bootclasspath="${java.home}/lib/rt.jar">  
+        	  <compilerarg value="-Xlint:unchecked"/>
+        </javac>  
+    </target>  
+
+    <target name="makewar" depends="complie">  
+        <!-- 删除原有war包。 -->  
+        <delete dir="${basedir}/appsystem.war" /> 
+		<!-- 打war包  -->
+        <war warfile="${basedir}/appsystem.war" webxml="${build}/WEB-INF/web.xml"> 
+        	
+        <lib dir="D:\soft\myeclipse_jdk_compile\com.sun.java.jdk7.win32.x86_64_1.7.0.u45\jre\lib\ext"></lib>  
+
+        <classes dir="${build}/WEB-INF/classes"/>  
+
+        <fileset dir="${build}"/>  
+
+        </war> 
+    	<!--删除临时文件夹 -->
+    	<delete dir="${basedir}/build" /> 
+    </target>  
+
+</project>  

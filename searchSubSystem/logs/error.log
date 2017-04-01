@@ -1,0 +1,47 @@
+160718 10:12:18,630 ERROR <com.jws.app.operater.service.impl.SourceMatesearchServiceImpl.addSearchSource(SourceMatesearchServiceImpl.java:100)> 澧炲姞婧愬紓甯竛ull
+160718 10:12:39,843 ERROR <com.jws.app.operater.service.impl.SourceMatesearchServiceImpl.addSearchSource(SourceMatesearchServiceImpl.java:100)> 澧炲姞婧愬紓甯竛ull
+160718 10:13:20,725 ERROR <com.jws.app.operater.service.impl.SourceMatesearchServiceImpl.addSearchSource(SourceMatesearchServiceImpl.java:100)> 澧炲姞婧愬紓甯竛ull
+160718 10:13:33,749 ERROR <com.jws.app.operater.service.impl.SourceMatesearchServiceImpl.addSearchSource(SourceMatesearchServiceImpl.java:100)> 澧炲姞婧愬紓甯竛ull
+160718 10:14:37,579 ERROR <com.jws.app.operater.service.impl.SourceMatesearchServiceImpl.addSearchSource(SourceMatesearchServiceImpl.java:100)> 澧炲姞婧愬紓甯窮or input string: "ceshi"
+160718 10:14:56,663 ERROR <com.jws.app.operater.service.impl.SourceMatesearchServiceImpl.addSearchSource(SourceMatesearchServiceImpl.java:100)> 澧炲姞婧愬紓甯窮or input string: "ceshi"
+160718 10:15:15,995 ERROR <com.jws.app.operater.service.impl.SourceMatesearchServiceImpl.addSearchSource(SourceMatesearchServiceImpl.java:100)> 澧炲姞婧愬紓甯窮or input string: "ceshi"
+160718 15:37:37,365 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:37:37,365 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:37:37,365 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:37:37,380 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:37:37,380 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:37:37,380 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:37:37,380 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:37:37,380 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:37:37,396 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:37:37,396 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:37:43,412 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:37:43,412 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:37:43,412 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:37:43,428 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:37:43,428 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:37:43,428 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:37:43,428 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:37:43,428 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:37:43,428 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:37:43,428 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:37:44,634 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.loadCoverageData(CoverageDataFileHandler.java:86)> Cobertura: Loaded information on 72 classes.
+160718 15:37:44,791 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.saveCoverageData(CoverageDataFileHandler.java:138)> Cobertura: Saved information on 72 classes.
+160718 15:40:00,155 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:40:00,171 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:40:00,171 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:40:00,171 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:40:00,171 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:40:00,186 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:40:00,186 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:40:00,186 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:40:04,871 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:40:04,871 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:40:04,871 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:40:04,886 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:40:04,886 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:40:04,886 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:40:04,886 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.addCallLog(SearchServiceImpl.java:740)> 记录日志异常null
+160718 15:40:04,886 ERROR <com.jws.app.operater.service.impl.SearchServiceImpl.updateCallLog(SearchServiceImpl.java:759)> 更新日志异常null
+160718 15:40:06,125 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.loadCoverageData(CoverageDataFileHandler.java:86)> Cobertura: Loaded information on 72 classes.
+160718 15:40:06,265 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.saveCoverageData(CoverageDataFileHandler.java:138)> Cobertura: Saved information on 72 classes.

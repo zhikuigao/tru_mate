@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+
+<!--- global properties -->
+<property>
+	<name>hadoop.tmp.dir</name>
+	<value>/behavior</value>
+	<description>A base for other temporary directories.</description>
+</property>
+
+<!-- file system properties -->
+<property>
+	<name>fs.default.name</name>
+	<value>hdfs://longww:8020</value>
+</property>
+
+<property>
+	<name>dfs.append.support</name>
+	<value>true</value>
+</property>
+
+<property>
+	<name>mapreduce.reduce.shuffle.connect.timeout</name>
+	<value>5000</value>
+</property> 
+<property>
+	<name>fs.s3.maxRetries</name>
+	<value>2</value>
+</property>
+</configuration>

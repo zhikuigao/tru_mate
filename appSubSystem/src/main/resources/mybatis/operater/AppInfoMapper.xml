@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.AppInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jws.app.operater.model.AppInfo" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="type_id" property="typeId" jdbcType="CHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="size" property="size" jdbcType="INTEGER" />
+    <result column="language" property="language" jdbcType="VARCHAR" />
+    <result column="app_tag" property="appTag" jdbcType="VARCHAR" />
+    <result column="describe" property="describe" jdbcType="VARCHAR" />
+    <result column="apply_platform" property="applyPlatform" jdbcType="VARCHAR" />
+    <result column="company_url" property="companyUrl" jdbcType="VARCHAR" />
+    <result column="icon_url" property="iconUrl" jdbcType="VARCHAR" />
+    <result column="download_url" property="downloadUrl" jdbcType="VARCHAR" />
+    <result column="download_count" property="downloadCount" jdbcType="INTEGER" />
+    <result column="vote_count" property="voteCount" jdbcType="INTEGER" />
+    <result column="flag" property="flag" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+     id, type_id, 'name', size, language, app_tag, 'describe', apply_platform, company_url, 
+    icon_url, download_url, download_count, vote_count, flag, create_time, update_time
+  </sql>
+  <!-- 查询应用详情  -->
+  <select id="queryAppInfo" parameterType="string" resultType="map">
+  	SELECT id, `name`, size, app_bit appBit, `describe`,app_version appVersion
+		, apply_platform platform, company_url companyUrl, icon_url iconUrl,
+		download_url downloadUrl, update_time updateTime, bd_download_count bdDownCount,bd_point bdPoint
+		, (
+			SELECT type
+			FROM tb_app_bd_type
+			WHERE id = type_id
+			) AS category 
+	FROM tb_app_bd_info
+	WHERE id = #{id}
+  </select>
+  <!-- 查询所有app -->
+  <select id="queryAllApp" resultType="map" >
+  	 SELECT type.type,info.id,info.name, ifnull(info.download_url,'') downloadUrl, ifnull(info.icon_url,'') iconUrl
+  	 FROM `tb_app_bd_info` info join tb_app_bd_type type on info.type_id = type.id
+	 where info.flag='1';
+  </select>
+  <!-- 根据类别分页查询 -->
+  <select id="queryAppByType" resultType="map" parameterType="map">
+	  select a.* from (
+		SELECT info.id, info.name ,ifnull(info.download_url, NULL) AS downloadUrl
+				, ifnull(info.icon_url, NULL) AS iconUrl
+		FROM `tb_app_bd_info` info 
+		WHERE info.flag = '1'
+			AND info.type_id = #{typeId}
+			order by info.id asc
+	  ) a
+	  limit #{pageFrom},#{pageNum}
+  </select>
+  <!-- 根据类别统计总数 -->
+  <select id="countAppByTypeId" resultType="int" parameterType="int">
+  	select count(id) FROM `tb_app_bd_info` where flag='1' and type_id = #{typeId}
+  </select>
+  <!-- 根据关键字分页查询 -->
+  <select id="queryAppBySearchKey" resultType="map" parameterType="map">
+	  select a.* from (
+		SELECT info.id, info.name ,ifnull(info.download_url, NULL) AS downloadUrl
+				, ifnull(info.icon_url, NULL) AS iconUrl, info.size, info.`describe`
+				, DATE_FORMAT(info.update_time,'%Y-%m-%d %H:%i:%s') updateTime
+		FROM `tb_app_bd_info` info 
+		WHERE info.flag = '1'
+			AND info.name like #{searchKey}
+			order by info.id asc
+	  ) a
+	  limit #{pageFrom},#{pageNum}
+  </select>
+  <!-- 根据关键字统计总数 -->
+  <select id="countAppBySearchKey" resultType="int" parameterType="string">
+  	select count(id) FROM `tb_app_bd_info` where flag='1' and name like #{searchKey} 
+  </select>
+  
+  <select id="queryUserProfessinal" parameterType="java.lang.String" resultType="map">
+  	SELECT professional,industry from mate_user.tb_user_info where id= #{userId}
+  </select>
+  <!--  -->
+  <select id="queryAppByTypes" parameterType="string" resultType="map">
+  	select a.* from (
+		SELECT info.id, info.name ,ifnull(info.download_url, NULL) AS downloadUrl
+				, ifnull(info.icon_url, NULL) AS iconUrl
+		FROM `tb_app_bd_info` info 
+		WHERE info.flag = '1'
+			<if test="null != typeIds">
+				AND info.type_id in	(#{typeIds})
+			</if>
+			order by info.bd_download_count desc
+	  ) a
+	  limit 0,100
+  </select>
+  
+  <update id="updateAppVoteCountByAppId">
+  	UPDATE tb_app_info
+	SET vote_count = vote_count + 1, update_time = NOW()
+	WHERE id = #{appId}
+  </update>
+  
+  <select id="queryAppVoteCountByAppId" resultType="java.lang.Integer">
+  	SELECT vote_count
+  	FROM tb_app_info
+  	WHERE id = #{appId}
+  </select>
+  
+  
+</mapper>

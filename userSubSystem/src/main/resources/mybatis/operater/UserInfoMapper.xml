@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.UserInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jws.app.operater.model.UserInfo" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="is_tour" property="isTour" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="industry" property="industry" jdbcType="VARCHAR" />
+    <result column="professional" property="professional" jdbcType="VARCHAR" />
+    <result column="industry_id" property="industryId" jdbcType="VARCHAR" />
+    <result column="pro_id" property="proId" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="CHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="qq" property="qq" jdbcType="VARCHAR" />
+    <result column="qq_token" property="qqToken" jdbcType="VARCHAR" />
+    <result column="qq_open_id" property="qqOpenId" jdbcType="VARCHAR" />
+    <result column="sina" property="sina" jdbcType="VARCHAR" />
+    <result column="sina_token" property="sinaToken" jdbcType="VARCHAR" />
+    <result column="sina_open_id" property="sinaOpenId" jdbcType="VARCHAR" />
+    <result column="wchat" property="wchat" jdbcType="VARCHAR" />
+    <result column="wchat_token" property="wchatToken" jdbcType="VARCHAR" />
+    <result column="wchat_open_id" property="wchatOpenId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="syn_flag" property="synFlag" jdbcType="VARCHAR" />
+    <result column="user_photo" property="userPhoto" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, is_tour, ifnull(nickname,"") nickname, ifnull(industry,"") industry, ifnull(professional,"") professional,
+    password,  ifnull(email,"") email, ifnull(phone,"") phone,  ifnull(qq,"") qq, ifnull(qq_token,"") qq_token, ifnull(qq_open_id,"") qq_open_id,
+    ifnull(sina,"") sina, ifnull(sina_token,"") sina_token, ifnull(sina_open_id,"") sina_open_id,
+    ifnull(wchat,"") wchat, ifnull(wchat_token,"") wchat_token,ifnull(wchat_open_id,"") wchat_open_id, create_time, update_time,syn_flag
+  </sql>
+  
+   
+   <select id="queryByAccount" parameterType="com.jws.app.operater.model.UserInfo" resultType="map" >
+    select 
+			u.id id, ifnull(u.email,'') email, ifnull(u.phone,'') phone, u.password password, u.syn_flag synFlag
+	 from tb_user_info u 	
+    where  u.password = #{record.password}
+	    <if test="record.email != null">
+	    	and u.email = #{record.email}
+	    </if>
+	    <if test="record.phone != null">
+	    	and u.phone = #{record.phone}
+	    </if>
+  </select> 
+   <select id="queryUserInfo" parameterType="com.jws.app.operater.model.UserInfo" resultMap="BaseResultMap" >
+    select 
+			<include refid="Base_Column_List"/>
+	 from tb_user_info
+    <where>
+    	<choose>
+    		<when test="record.qqOpenId != null">
+    			qq_open_id = #{record.qqOpenId}
+    		</when>
+    		<when test="record.sinaOpenId != null">
+    			and sina_open_id = #{record.sinaOpenId}
+    		</when>
+    		<when test="record.wchatOpenId != null">
+    			and wchat_open_id = #{record.wchatOpenId}
+    		</when>
+    	</choose>
+    </where>
+  </select>
+  
+  <select id="queryById" parameterType="string" resultMap="BaseResultMap">
+ 	 select 
+    			<include refid="Base_Column_List"/>
+	 from tb_user_info
+    where  id = #{id}
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.jws.app.operater.model.UserInfo" >
+    insert into tb_user_info (
+	    	id,
+	    	is_tour,
+	    	create_time
+	    	<if test="null != nickname">
+	    		,nickname
+	    	</if>
+	    	<if test="null != sex">
+	    		,sex
+	    	</if>
+	    	<if test="null != userPhoto">
+	    		,user_photo
+	    	</if>
+	    	<if test="null != password">
+	    		,password
+	    	</if>
+	    	<if test="null != email">
+	    		,email
+	    	</if>
+	    	<if test="null != phone">
+	    		,phone
+	    	</if>
+	    	<if test="null != qq">
+	    		,qq
+	    	</if>
+	    	<if test="null != qqToken">
+	    		,qq_token
+	    	</if>
+	    	<if test="qqOpenId != null" >
+		        ,qq_open_id
+		     </if>
+	    	<if test="null != sina">
+	    		,sina
+	    	</if>
+	    	<if test="null != sinaToken">
+	    		,sina_token
+	    	</if>
+	    	<if test="sinaOpenId != null" >
+		        ,sina_open_id
+		    </if>
+	    	<if test="null != wchat">
+	    		,wchat
+	    	</if>
+	    	<if test="null != wchatToken">
+	    		,wchat_token
+	    	</if>
+	    	 <if test="wchatOpenId != null" >
+		        ,wchat_open_id
+		     </if>
+      )
+    values (
+    	  #{id},
+    	  #{isTour},
+    	  NOW()
+    	  <if test="null != nickname">
+	    		,#{nickname}
+	      </if>  
+	      <if test="null != sex">
+	    		,#{sex}
+	    	</if>
+	    	<if test="null != userPhoto">
+	    		,#{userPhoto}
+	    	</if>  	  
+    	  <if test="null != password">
+	    		,#{password}
+	    	</if>
+	    	<if test="null != email">
+	    		,#{email}
+	    	</if>
+	    	<if test="null != phone">
+	    		,#{phone}
+	    	</if>
+	    	<if test="null != qq">
+	    		,#{qq}
+	    	</if>
+	    	<if test="null != qqToken">
+	    		,#{qqToken}
+	    	</if>
+	    	<if test="qqOpenId != null" >
+		        ,#{qqOpenId}
+		    </if>
+	    	<if test="null != sina">
+	    		,#{sina}
+	    	</if>
+	    	<if test="null != sinaToken">
+	    		,#{sinaToken}
+	    	</if>
+	    	<if test="sinaOpenId != null" >
+		        ,#{sinaOpenId}
+		    </if>
+	    	<if test="null != wchat">
+	    		,#{wchat}
+	    	</if>
+	    	<if test="null != wchatToken">
+	    		,#{wchatToken}
+	    	</if>
+	    	<if test="wchatOpenId != null" >
+		        ,#{wchatOpenId}
+		    </if>
+      )
+  </insert>
+  
+  <select id="countAccount" parameterType="com.jws.app.operater.model.UserInfo" resultType="java.lang.Integer" >
+    select count(*) from tb_user_info
+    <where>
+	     <if test="record.type == 'email'">
+	    	email = #{record.email}
+	    </if>
+	     <if test="record.type == 'phone'">
+	    	phone = #{record.phone}
+	    </if>
+    </where>
+    
+  </select>
+ 
+ 
+  <update id="updateSelective" parameterType="com.jws.app.operater.model.UserInfo" >
+    update tb_user_info
+    <set >
+    	update_time =  NOW(),
+     <if test="record.isTour != null" >
+        is_tour = #{record.isTour,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nickname != null" >
+        nickname = #{record.nickname,jdbcType=VARCHAR},
+      </if>
+       <if test="record.sex != null" >
+        sex = #{record.sex,jdbcType=BIT},
+      </if>
+      <if test="record.userPhoto != null" >
+        user_photo = #{record.userPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null" >
+        birthday = #{record.birthday,jdbcType=DATE},
+      </if>
+      <if test="record.industry != null" >
+        industry = #{record.industry,jdbcType=VARCHAR},
+      </if>
+      <if test="record.professional != null" >
+        professional = #{record.professional,jdbcType=VARCHAR},
+      </if>
+      <if test="record.industryId != null" >
+        industry_id = #{record.industryId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proId != null" >
+        pro_id = #{record.proId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=CHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qq != null" >
+        qq = #{record.qq,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qqToken != null" >
+        qq_token = #{record.qqToken,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qqOpenId != null" >
+        qq_open_id = #{record.qqOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sina != null" >
+        sina = #{record.sina,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sinaToken != null" >
+        sina_token = #{record.sinaToken,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sinaOpenId != null" >
+        sina_open_id = #{record.sinaOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wchat != null" >
+        wchat = #{record.wchat,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wchatToken != null" >
+        wchat_token = #{record.wchatToken,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wchatOpenId != null" >
+        wchat_open_id = #{record.wchatOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.synFlag != null" >
+        syn_flag = #{record.synFlag},
+      </if>
+    </set>
+    <where>
+    	<choose>
+	    	<when test="record.id != null">
+	    		id = #{record.id}
+	    	</when>
+	    	<when test="record.email != null">
+	    		and email = #{record.email}
+	    	</when>
+	    	<when test="record.phone != null">
+	    		and phone = #{record.phone}
+	    	</when>
+    	</choose>
+    </where>
+  </update>
+  <!-- 查询搜索源表 -->
+  <select id="queryAllSourceId" resultType="java.lang.String">
+  	SELECT id from mate_search.tb_search_source where delete_flag = 1 order by id ASC
+  </select>
+  <!-- 批量配置 -->
+  <insert id="adduserConfigBatch" parameterType="list">
+  	insert into mate_search.tb_config (id, user_id, source_id, type,
+      	flag, create_time
+      )
+      values
+     <foreach collection="list" item="userConfig" separator=",">
+    	(#{userConfig.id}, #{userConfig.userId}, #{userConfig.sourceId}, #{userConfig.type}, '1', NOW() 
+      )
+    </foreach>     
+  </insert>
+  
+  <!-- 模块  移除资讯模块-->
+   <select id="queryAllModuleId" resultType="java.lang.String">
+  	SELECT id from mate_search.tb_module where delete_flag = 1 
+  		<!-- and code != 'information'  -->
+  	order by id ASC
+  </select>
+ 
+    <select id="queryPerson" resultType="com.jws.app.operater.model.UserInfo"  parameterType="String">
+  			SELECT id,sex,nickname,industry,professional,email,phone,birthday,user_photo userPhoto 
+  			FROM tb_user_info WHERE id = #{id}
+ 	</select>
+ 	
+ 	
+ <update id="updatePerson" parameterType="com.jws.app.operater.model.UserInfo" >
+    update tb_user_info
+    <set>
+    	update_time =  NOW(),
+        sex = #{record.sex,jdbcType=VARCHAR},
+        birthday = #{record.birthday,jdbcType=TIMESTAMP},
+        nickname = #{record.nickname,jdbcType=VARCHAR},
+        industry = #{record.industry,jdbcType=VARCHAR},
+        professional = #{record.professional,jdbcType=VARCHAR},
+      <if test="record.industryId != null" >
+        industry_id = #{record.industryId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proId != null" >
+        pro_id = #{record.proId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=CHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qq != null" >
+        qq = #{record.qq,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qqToken != null" >
+        qq_token = #{record.qqToken,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qqOpenId != null" >
+        qq_open_id = #{record.qqOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sina != null" >
+        sina = #{record.sina,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sinaToken != null" >
+        sina_token = #{record.sinaToken,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sinaOpenId != null" >
+        sina_open_id = #{record.sinaOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wchat != null" >
+        wchat = #{record.wchat,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wchatToken != null" >
+        wchat_token = #{record.wchatToken,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wchatOpenId != null" >
+        wchat_open_id = #{record.wchatOpenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <where>
+	  id = #{record.id}
+    </where>
+  </update>
+  
+
+</mapper>

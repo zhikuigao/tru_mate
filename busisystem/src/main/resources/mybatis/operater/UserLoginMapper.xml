@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.UserLoginMapper" >
+  <resultMap id="BaseResultMap" type="com.jws.app.operater.model.UserLogin" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="validity" property="validity" jdbcType="BIT" />
+    <result column="login_device" property="loginDevice" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, user_id, token, validity, login_device, create_time, update_time
+  </sql>
+  
+  <select id="queryLoginInfo" parameterType="com.jws.app.operater.model.UserLogin" resultMap="BaseResultMap">
+  	select  
+  		<include refid="Base_Column_List"/>   	
+  	from tb_user_login
+  	<where>
+       <if test="loginDevice != null" >
+       		and login_device = #{loginDevice}
+       </if>
+        <if test="validity != null" >
+       		and validity = #{validity}
+       </if>
+        <if test="token != null" >
+       		and token = #{token}
+       </if>
+    </where>  
+    order by id desc  limit 1
+  </select>
+  
+  
+  
+  
+</mapper>

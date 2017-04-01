@@ -1,0 +1,80 @@
+@charset "utf-8";
+body,div,ol,ul,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,p,form,fieldset,legend,input,hr,span{margin:0; padding:0;}
+h1,h2,h3,h4,h5,h6{ font-size:100%; font-weight:normal;}
+ol,ul{ list-style:none;}
+body{
+    font-family:"微软雅黑","Microsoft YaHei";
+}
+*{
+    -webkit-user-select:none;
+}
+input[type=text], input[type=password],textarea{
+    cursor: text;
+}
+a{transition: .4s; text-decoration:none;}
+.APPdrag{-webkit-app-region:drag;}
+.scroll{height: 550px;overflow-y: auto; overflow-x: hidden;}
+.scroll::-webkit-scrollbar-thumb{background-color:#85c7fe ; outline: 2px solid #fff; border-radius: 4px; visibility: hidden; position: absolute;}
+.scroll::-webkit-scrollbar-thumb:hover{background-color:#3d9bff;height:50px;border-radius:4px;}
+.scroll::-webkit-scrollbar{width:6px;height:6px;}
+.scroll::-webkit-scrollbar-track-piece{background-color:#efefef;border-radius:0; visibility: hidden;}
+.scroll:hover::-webkit-scrollbar-thumb,.scroll:hover::-webkit-scrollbar-track-piece{ visibility: visible;}
+.mainwindow{ width: 370px; height: 610px; border:1px solid #e0e0e0; overflow: hidden;}
+/*加载中动画*/
+.loading{
+    position: fixed;
+    z-index: 100;
+    top:0;
+    left: 0;
+    width: 388px;
+    height: 558px;
+    background: rgba(0,0,0,0.5);
+    display: none;
+}
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -30px 0 0 -45px;
+    width: 90px;
+    height: 60px;
+    text-align: center;
+    font-size: 10px;
+}
+.spinner > div {
+    background-color: #F1EAEA;
+    height: 100%;
+    width: 6px;
+    display: inline-block;
+    -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+    animation: stretchdelay 1.2s infinite ease-in-out;
+}
+.spinner .rect2 {
+    -webkit-animation-delay: -1.1s;
+    animation-delay: -1.1s;
+}
+.spinner .rect3 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+}
+.spinner .rect4 {
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s;
+}
+.spinner .rect5 {
+    -webkit-animation-delay: -0.8s;
+    animation-delay: -0.8s;
+}
+@-webkit-keyframes stretchdelay {
+    0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+    20% { -webkit-transform: scaleY(1.0) }
+}
+@keyframes stretchdelay {
+    0%, 40%, 100% {
+        transform: scaleY(0.4);
+        -webkit-transform: scaleY(0.4);
+    }  20% {
+           transform: scaleY(1.0);
+           -webkit-transform: scaleY(1.0);
+       }
+}

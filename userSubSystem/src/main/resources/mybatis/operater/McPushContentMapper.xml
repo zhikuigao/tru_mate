@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.McPushContentMapper" >
+  <resultMap id="BaseResultMap" type="com.jws.app.operater.model.McPushContent" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="msg_content" property="msgContent" jdbcType="VARCHAR" />
+    <result column="push_status" property="pushStatus" jdbcType="VARCHAR" />
+    <result column="msg_type" property="msgType" jdbcType="VARCHAR" />
+    <result column="sub_type_id" property="subTypeId" jdbcType="INTEGER" />
+    <result column="msg_sub_type" property="msgSubType" jdbcType="VARCHAR" />
+    <result column="push_type" property="pushType" jdbcType="VARCHAR" />
+    <result column="plan_time" property="planTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="msg_content" property="msgContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+    <resultMap id="selectPushContentAllMap" type="com.jws.app.operater.model.McPushContent" >
+     <result column="msg_content" property="msgText" jdbcType="VARCHAR" />
+      <result column="plan_time" property="planTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+    <resultMap id="selectPushTypeMap" type="com.jws.app.operater.model.McPushContent">
+    <result column="msg_sub_type" property="msgSubType" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+   id, user_id, msg_content, push_status, msg_type, sub_type_id, msg_sub_type, push_type, 
+    plan_time, create_time, update_time,msg_content
+  </sql>
+  
+  <select id="queryPushFailData" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from mc_push_content
+    where push_status = '0' and plan_time &lt; NOW()
+  </select>
+  
+  <select id="queryTimingData" resultMap="BaseResultMap" parameterType="com.jws.app.operater.model.McPushContent">
+  	select 
+    <include refid="Base_Column_List" />
+    from mc_push_content
+    where push_status = '0' and push_type = '0' and  plan_time = #{planTime}
+  </select>
+ 
+  <insert id="batchInsertPushMsg" parameterType="list" >
+	INSERT INTO mc_push_content (id, user_id,msg_sub_type,
+   	push_status, msg_type, push_type,
+	msg_content ,create_time, plan_time)
+	VALUES 
+		<foreach collection="list" item="mcPushContent" separator=",">
+			(#{mcPushContent.id},#{mcPushContent.userId},#{mcPushContent.msgSubType},
+			 '0', #{mcPushContent.msgType}, #{mcPushContent.pushType},
+			 #{mcPushContent.msgContent}, NOW(), #{mcPushContent.planTime})
+		</foreach>		
+  </insert>
+  
+  <update id="batchUpdatePushStatus" parameterType="list" >
+  	update  mc_push_content
+  	set  push_status = '1',
+  		update_time = NOW()
+  	where push_status = '0' and id in 
+  	<foreach collection="ids" item="id" open="(" separator="," close=")">
+  		#{id}
+  	</foreach>
+  </update>
+  
+    <select id="selectPushType" parameterType="map" resultMap="selectPushTypeMap">
+ 		SELECT distinct msg_sub_type FROM mc_push_content WHERE msg_type = #{msgType,jdbcType=VARCHAR} AND push_status = '1'
+ 		<if test="userid != null" >
+       	 and msg_type = #{userid}
+      	</if>
+  </select>
+  
+  <select id="selectPushContentAll" parameterType="map" resultMap="selectPushContentAllMap">
+ 		SELECT msg_content,plan_time FROM mc_push_content WHERE  push_status = '1' 
+ 		<if test="userid != null" >
+       	 and user_id = #{userid}
+      	</if>
+ 		  <if test="msgType != null" >
+       	 and msg_type = #{msgType}
+      	</if>
+      	 <if test="msgSubType != null" >
+        and msg_sub_type = #{msgSubType}
+      	</if>
+      	<if test="lasttime != null" >
+       	 and plan_time &lt; #{lasttime}
+      	</if>
+ 		 ORDER BY plan_time DESC LIMIT  #{page,jdbcType=INTEGER}, #{pageNum,jdbcType=INTEGER}
+  </select>
+ 
+ <select id="selectSystemContentAll" parameterType="map" resultMap="selectPushContentAllMap">
+	(SELECT msg_content,plan_time FROM mc_push_content WHERE  push_status = '1' AND msg_type = '3' ORDER BY plan_time DESC LIMIT 0,1)
+	  UNION (SELECT msg_content,plan_time FROM mc_push_content WHERE  push_status = '1' and msg_type in ('1','2','4') AND user_id = #{userid,jdbcType=VARCHAR}
+	 <if test="lasttime != null" >
+	 AND plan_time &lt; #{lasttime}
+	  </if>
+	 ORDER BY plan_time DESC LIMIT #{page,jdbcType=INTEGER}, #{pageNum,jdbcType=INTEGER}
+	)
+ </select>
+ 
+   <select id="selectSystemContentNoAll" parameterType="map" resultMap="selectPushContentAllMap">
+	SELECT msg_content,plan_time FROM mc_push_content WHERE  push_status = '1' and msg_type in ('1','2','4')  AND user_id = #{userid,jdbcType=VARCHAR}
+	<if test="lasttime != null" >
+      	 and plan_time &lt; #{lasttime}
+     	</if>
+	ORDER BY plan_time DESC LIMIT #{page,jdbcType=INTEGER}, #{pageNum,jdbcType=INTEGER}
+ </select>
+  <!-- 系统消息模块， 首页查询（第一个是系统消息入口，其他为第三方应用系统消息）-->
+  <select id="selectSystemFirst" parameterType="map" resultMap="selectPushContentAllMap">
+	(SELECT msg_content,plan_time FROM mc_push_content WHERE  push_status = '1' AND msg_type = '3' ORDER BY plan_time DESC LIMIT 0,1)
+	  UNION (SELECT msg_content,plan_time FROM mc_push_content WHERE  push_status = '1' and msg_type in ('4','5') AND user_id = #{userid,jdbcType=VARCHAR}
+	 <if test="lasttime != null" >
+	 AND plan_time &lt; #{lasttime}
+	  </if>
+	 ORDER BY plan_time DESC LIMIT #{page,jdbcType=INTEGER}, #{pageNum,jdbcType=INTEGER}
+	)
+ </select>
+ <!--  系统消息模块， 更多页查询 ，即第三方应用系统消息-->
+   <select id="selectSystemMore" parameterType="map" resultMap="selectPushContentAllMap">
+	SELECT msg_content,plan_time FROM mc_push_content WHERE  push_status = '1' and msg_type in ('4','5')  AND user_id = #{userid,jdbcType=VARCHAR}
+	<if test="lasttime != null" >
+      	 and plan_time &lt; #{lasttime}
+     	</if>
+	ORDER BY plan_time DESC LIMIT #{page,jdbcType=INTEGER}, #{pageNum,jdbcType=INTEGER}
+ </select>
+<select id="getFirstSystem" parameterType="map" resultMap="selectPushContentAllMap">
+	SELECT msg_content,plan_time FROM mc_push_content 
+	WHERE  push_status = '1' AND msg_type = '3' 
+	ORDER BY plan_time DESC LIMIT 0,1
+ </select>
+ 
+  <select id="getSystemByPage" parameterType="map" resultType="map">
+	SELECT msg_content content FROM mc_push_content 
+	WHERE  push_status = '1' and msg_type=3 
+		<if test="lastTime != null and lastTime != ''" >
+      	 and plan_time &lt; #{lastTime}
+     	</if>
+	ORDER BY plan_time DESC LIMIT #{pageFrom}, #{pageNum}
+ </select>
+  
+</mapper>

@@ -1,0 +1,45 @@
+.plTop{ height: 60px; background: #3d9bff; font-size: 0;}
+.plTop span{ display: inline-block; vertical-align: top;}
+.plTop .title{font-size: 24px; line-height: 60px; text-align: center; color: #fff; display: block;}
+.plTop .logo{ line-height: 60px; font-size: 24px; color: #fff; float: left;}
+.logo img{ width: 46px; vertical-align: top; margin: 7px 16px 0 10px;}
+.plTop .fh{-webkit-app-region:no-drag; cursor: pointer; display: none;}
+.fh img{ width:16px; margin: 18px 0 0 14px;}
+.conls_a{ text-align: right; float: right;}
+.conls_a a{ display: inline-block; width: 26px; height: 26px; text-indent: 20em; overflow: hidden; background-image: url(../images/tips.png);-webkit-app-region:no-drag;}
+.conls_a a:nth-child(2){ background-position: -26px 0; display: none;}
+.conls_a a:nth-child(3){ background-position: -52px 0;}
+.conls_a a:nth-child(1):hover,.conls_a a:nth-child(2):hover{ background-color:#85c7fe;}
+.conls_a a:nth-child(3):hover{ background-color: #e10000;}
+
+.mainwindowtitle .conls_a a:nth-child(2){display: inline-block;}
+.navBox{ height: 60px; line-height: 60px; margin: 0 30px; border-bottom:1px solid #e0e0e0;}
+.nav{ float: left; width: 250px; height: 60px; line-height: 60px; position: relative;}
+.nav a{ display: inline-block; vertical-align: bottom; height: 36px; line-height: 36px; padding: 0 16px; font-size: 14px; color: #333;}
+.nav a.curr,.nav a:hover{ color:#3d9bff;}
+.nav i{ position: absolute; display: block; width: 60px; height: 2px; background: #0078ff; bottom: -1px;}
+.navcenter{ padding: 0 30px;}
+
+.navcenter iframe{display: none;}
+.navcenter webview{flex: 0 1; width: 0px; height: 0px;}
+.navcenter .scroll{ height: 470px; padding-right:6px;}
+
+.tBox{ position: fixed; top:121px; right:30px; overflow: hidden; width: 24px; height: 320px; z-index: 10;}
+.tBox ul{ padding:0 10px; width: 220px; height: 320px; background: rgba(255,255,255,.9); position: absolute; right: -240px;}
+.tBox span{ width: 24px; height: 102px; border-radius: 5px 0 0 5px; background: #0078ff; color: #fff;position: absolute;top:30px;right:0;text-align: center; cursor: pointer; line-height: 20px;}
+.tBox ul li:first-child{ font-size: 18px; line-height: 30px;}
+.tBox ul li a{ display: inline-block; font-size: 14px; color: #010101; line-height: 24px; width: 196px; overflow: hidden; text-overflow: ellipsis;white-space:nowrap; }
+.tBox ul li a:hover{color: #0078ff;}
+.tBox ul li i{ display: inline-block; width: 16px; height: 16px; text-align: center; line-height: 16px; vertical-align: top; margin: 4px 8px 0 0; font-style: normal; font-size: 12px;  background: #333333; color: #fff;}
+.tBox ul li:nth-of-type(n+1) i{ background: #0078ff;}
+.tBox ul li:nth-of-type(n+5) i{ background: #333333;}
+
+.centRight{ text-align: right; font-size: 0; }
+.centRight>*{margin:0 0 12px 8px; display: inline-block; vertical-align: bottom; height: 26px;}
+.centRight span{ font-size: 14px; color: #010101; line-height: 26px;}
+.centRight a img{ cursor: pointer; vertical-align: top;}
+.centRight i{width: 0; height: 20px; border-left: 1px solid #e0e0e0; margin-bottom: 15px;}
+.centRight a.copy_a img{margin-left: -5px;}
+.centRight a.weixin{ position: relative;}
+.centRight a.weixin span{ position: absolute; top:26px; left: -47px;z-index: 2; display: none;}
+.centRight a.weixin span img{ width: 120px; height: 120px;}

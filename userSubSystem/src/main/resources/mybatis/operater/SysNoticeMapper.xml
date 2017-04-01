@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.SysNoticeMapper" >
+  <resultMap id="BaseResultMap" type="com.jws.app.operater.model.SysNotice" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="monitor_status" property="monitorStatus" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="effective_time" property="effectiveTime" jdbcType="BIGINT" />
+  </resultMap>
+  
+   <sql id="Base_Column_List" >
+    id, title, monitor_status,effective_time, create_time, update_time,content
+  </sql>
+  <!-- 公告   start 公告 -->
+  <insert id="insert" parameterType="com.jws.app.operater.model.SysNotice" >
+    insert into tb_sys_notice (id, title,   create_time, effective_time, content
+      )
+    values (#{id}, #{title},  NOW(), #{effectiveTime}, #{content}
+      )
+  </insert>
+  <!-- 根据条件查询通告 -->
+  <select id="queryNoticeList" parameterType="com.jws.app.operater.model.SysNotice" resultType="map">
+  	select id, title, content , effective_time effectiveTime ,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') createTime from tb_sys_notice
+  	where monitor_status = #{monitorStatus}
+  </select>
+  <!-- 量更新公告推送状态 -->
+  <update id="batchUpdateStatus" parameterType="list">
+  	update tb_sys_notice
+  	set monitor_status = '1',
+  		update_time = NOW()
+  	where monitor_status = '0' and id in   	
+  	<foreach collection="ids" item="id" open="(" separator="," close=")">
+  		#{id}
+  	</foreach> 
+  </update>
+  <!-- 公告   end 公告 -->
+  
+  <!-- 应用   start 应用 -->
+   <!-- 根据条件查询应用 -->
+  <select id="queryAppRecList" parameterType="com.jws.app.operater.model.AppRecommend" resultType="map">
+  	select id, app_id appId, user_id userId, CONCAT(app_name,' ',app_ver) title, app_describe content , app_url url,
+  		category_id categoryId,category_name category,
+  		flag isUpdate ,app_icon_url iconUrl,  DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') createTime 
+  	from mate_app.tb_app_data_user_im_rec
+  	where monitor_status = #{monitorStatus}
+  </select>
+  <!-- 量更新应用推送状态 -->
+  <update id="batchUpdateAppStatus" parameterType="list">
+  	update mate_app.tb_app_data_user_im_rec
+  	set monitor_status = '1'  		
+  	where monitor_status = '0' and id in   	
+  	<foreach collection="ids" item="id" open="(" separator="," close=")">
+  		#{id}
+  	</foreach> 
+  </update>
+  <select id="queryAppInfo" parameterType="int" resultType="map">
+  	select  i.id, i.app_version version, i.`describe` appdesc,
+  			i.`name` name,i.icon_url iconUrl,i.download_url url,t.id categoryId,t.type categoryName
+  	from mate_app.tb_app_bd_info  i
+  	join mate_app.tb_app_bd_type t on i.type_id = t.id
+  	where i.id=#{id}
+  </select>
+  <insert id="insertAppRec" parameterType="com.jws.app.operater.model.AppRecommend">
+  	insert into mate_app.tb_app_data_user_im_rec (app_id,
+  		user_id, app_name, app_icon_url, app_ver, app_describe,
+  	 	flag, app_url,category_id,category_name,update_time
+      )
+    values (#{appId},
+    	#{userId}, #{appName}, #{appIconUrl},  #{appVer}, #{appDescribe}, 
+    	#{flag}, #{appUrl},	#{categoryId}, #{categoryName}, NOW()
+      )
+  </insert>
+  <select id="countAppCategory" parameterType="com.jws.app.operater.model.AppCategoryRec" resultType="int">
+  	select count(id) from mate_app.tb_app_category_rec 
+  	where user_id = #{userId} and category_name = #{categoryName}
+  </select>
+  <insert id="insertAppCategory" parameterType="com.jws.app.operater.model.AppCategoryRec">
+    insert into mate_app.tb_app_category_rec ( user_id, category_id, 
+      	category_name, create_time
+      )
+    values ( #{userId}, #{categoryId}, #{categoryName}, NOW()
+      )
+  </insert>
+
+  <!-- 应用   end 应用 -->
+  
+  <!-- 资讯   start 资讯 -->
+   <!-- 根据条件查询资讯 -->
+  <select id="queryNewsRecList" parameterType="com.jws.app.operater.model.NewsRecommend" resultType="map">
+  	select id,user_id userId ,title, url ,read_num readCount,category_name category,source,
+  		DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') createTime 
+  	from mate_news.tb_news_data_rec
+  	where monitor_status = #{monitorStatus}
+  </select>
+  <!-- 量更新资讯推送状态 -->
+  <update id="batchUpdateNewsStatus" parameterType="list">
+  	update mate_news.tb_news_data_rec
+  	set monitor_status = '1'  		
+  	where monitor_status = '0' and id in   	
+  	<foreach collection="ids" item="id" open="(" separator="," close=")">
+  		#{id}
+  	</foreach> 
+  </update>
+  <insert id="insertNews" parameterType="com.jws.app.operater.model.NewsRecommend" >
+    insert into mate_news.tb_news_data_rec (user_id, title, url, source, category_name, read_num, update_time
+      )
+    values (#{userId}, #{title}, #{url},  #{source}, #{categoryName}, #{readNum}, NOW()
+      )
+  </insert>
+  <select id="countNewsCategory" parameterType="com.jws.app.operater.model.CategoryRec" resultType="int">
+  	select count(id) from mate_news.tb_news_category_rec 
+  	where user_id = #{userId} and category_name = #{categoryName}
+  </select>
+  <insert id="insertNewsCategoryRec" parameterType="com.jws.app.operater.model.CategoryRec" >
+    insert into mate_news.tb_news_category_rec (user_id, category_name, create_time
+      )
+    values (#{userId},  #{categoryName},  NOW()
+      )
+  </insert>
+   <!-- 资讯   end 资讯 -->
+  
+</mapper>

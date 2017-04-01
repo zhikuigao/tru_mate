@@ -1,0 +1,46 @@
+body{
+    background-color: #FFFAF0;
+}
+#qq_login_btn{
+    vertical-align: middle;
+    background: url("imgs/Connect_logo_7.png") center no-repeat;
+    width: 63px;
+    height: 24px;
+}
+#head{
+    position: relative;
+}
+
+#contain{
+    width: 900px;
+    height: 620px;
+    margin: 0 auto;
+    background-color: #f5f5f5;
+    position: relative;
+    text-align: center;
+}
+#contain .img{
+    position: absolute;
+    font-size: 0px;
+}
+#contain .img >div{
+    display: inline-block;
+    vertical-align: middle;
+    width: 390px;
+    height: 620px;
+    margin:0 30px;
+}
+#img1 > div:nth-child(1){
+    background: url("imgs/index1.png") center no-repeat;
+}
+#img1 > div:nth-child(2){
+    background: url("imgs/index2.jpg") center no-repeat;
+}
+#img2 > div:nth-child(1){
+    background: url("imgs/index3.jpg" ) center no-repeat;
+}
+#img2 >  div:nth-child(2){
+    background: url("imgs/index4.jpg")  center no-repeat;
+}
+
+

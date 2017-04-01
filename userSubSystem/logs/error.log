@@ -1,0 +1,23 @@
+<<<<<<< HEAD
+160707 09:53:44,907 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.loadCoverageData(CoverageDataFileHandler.java:86)> Cobertura: Loaded information on 81 classes.
+160707 09:53:45,063 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.saveCoverageData(CoverageDataFileHandler.java:138)> Cobertura: Saved information on 81 classes.
+=======
+160706 10:17:16,640 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.loadCoverageData(CoverageDataFileHandler.java:86)> Cobertura: Loaded information on 81 classes.
+160706 10:17:16,790 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.saveCoverageData(CoverageDataFileHandler.java:138)> Cobertura: Saved information on 81 classes.
+160706 14:23:38,886 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.loadCoverageData(CoverageDataFileHandler.java:86)> Cobertura: Loaded information on 81 classes.
+160706 14:23:39,027 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.saveCoverageData(CoverageDataFileHandler.java:138)> Cobertura: Saved information on 81 classes.
+>>>>>>> dev
+160708 10:05:54,793 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.loadCoverageData(CoverageDataFileHandler.java:86)> Cobertura: Loaded information on 81 classes.
+160708 10:05:54,948 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.saveCoverageData(CoverageDataFileHandler.java:138)> Cobertura: Saved information on 81 classes.
+160708 10:13:33,043 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.loadCoverageData(CoverageDataFileHandler.java:86)> Cobertura: Loaded information on 81 classes.
+160708 10:13:33,262 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.saveCoverageData(CoverageDataFileHandler.java:138)> Cobertura: Saved information on 81 classes.
+160708 10:42:58,682 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.loadCoverageData(CoverageDataFileHandler.java:86)> Cobertura: Loaded information on 81 classes.
+160708 10:42:58,845 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.saveCoverageData(CoverageDataFileHandler.java:138)> Cobertura: Saved information on 81 classes.
+160708 10:52:55,809 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.loadCoverageData(CoverageDataFileHandler.java:86)> Cobertura: Loaded information on 81 classes.
+160708 10:52:56,038 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.saveCoverageData(CoverageDataFileHandler.java:138)> Cobertura: Saved information on 81 classes.
+160708 10:56:04,827 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.loadCoverageData(CoverageDataFileHandler.java:86)> Cobertura: Loaded information on 81 classes.
+160708 10:56:04,983 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.saveCoverageData(CoverageDataFileHandler.java:138)> Cobertura: Saved information on 81 classes.
+160708 11:05:02,502 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.loadCoverageData(CoverageDataFileHandler.java:86)> Cobertura: Loaded information on 81 classes.
+160708 11:05:02,715 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.saveCoverageData(CoverageDataFileHandler.java:138)> Cobertura: Saved information on 81 classes.
+160708 11:14:16,389 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.loadCoverageData(CoverageDataFileHandler.java:86)> Cobertura: Loaded information on 81 classes.
+160708 11:14:16,808 INFO  <net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler.saveCoverageData(CoverageDataFileHandler.java:138)> Cobertura: Saved information on 81 classes.

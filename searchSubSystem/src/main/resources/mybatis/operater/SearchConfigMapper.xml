@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.SearchConfigMapper" >
+  <resultMap id="SearchConfigResultMap" type="com.jws.app.operater.model.UserConfig" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="source_id" property="sourceId" jdbcType="VARCHAR" />
+    <result column="flag" property="flag" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, source_id, flag, create_time, update_time
+  </sql>
+   <!-- 查询搜索源表 -->
+  <select id="queryAllSourceId" resultType="java.lang.String">
+  	SELECT id from tb_search_source where delete_flag = 1 order by id ASC
+  </select>
+  <!-- 更新用户配置 -->
+  <delete id="updateUserConfig" parameterType="com.jws.app.operater.model.UserConfig" >
+  	update tb_config 
+  		set  flag = #{config.flag}
+  	 where user_id = #{config.userId} and source_id = #{config.sourceId} and type = #{config.type} ;
+  </delete>
+  
+  <!-- 查询用户已配置的搜索源 -->
+  <select id="queryUserConfig" parameterType="com.jws.app.operater.model.UserConfig" resultMap="SearchConfigResultMap">
+  	SELECT * from tb_config 
+  	where user_id = #{config.userId} 
+  	<if test="null != config.sourceId">
+  		and source_id = #{config.sourceId} 
+  	</if>
+  	<if test="null != config.type">
+  		and type = #{config.type} 
+  	</if>  	
+  	;
+  </select>
+  <!-- 配置 -->
+  <insert id="addUserConfig" parameterType="com.jws.app.operater.model.UserConfig">
+  	insert into tb_config (id, user_id, source_id, type,
+      flag, create_time
+      )
+      values
+    	(#{config.id}, #{config.userId}, #{config.sourceId}, #{config.type}, '1', NOW() )
+  </insert>
+  <resultMap id="SearchSourceResultMap" type="com.jws.app.operater.model.SearchSource" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="delete_flag" property="deleteFlag" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="flag" property="flag" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 查询所有配置 -->
+  <select id="queryAllSource" resultMap="SearchSourceResultMap">
+  	SELECT s.id, s.`name`, s.url, ifnull(c.id,'') flag
+			FROM tb_search_source s LEFT JOIN 
+				(SELECT id, source_id
+				FROM tb_config
+				WHERE user_id = #{userId} and flag = '1' and type='2'
+				) c
+			ON s.id = c.source_id
+		WHERE s.delete_flag = '1'
+	ORDER BY s.id ASC
+  </select>
+  <!-- 用户自定义搜索源 -->
+  <resultMap id="SearchDefinedResultMap" type="com.jws.app.operater.model.SearchDefined" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="flag" property="flag" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="queryUserDefined" parameterType="java.lang.String" resultMap="SearchDefinedResultMap">
+  	SELECT id , name , url from tb_search_defined where user_id =#{userId}  and flag = 1
+  </select>
+   <insert id="addUserDefined" parameterType="list">
+  	insert into tb_search_defined (id, user_id, name, url, flag, create_time
+      )
+      values
+    	(#{defined.id}, #{defined.userId}, #{defined.name}, #{defined.url} ,  '1', NOW() 
+      )
+  </insert>
+  <update id="deleteUserDefined" parameterType="list">
+    	update tb_search_defined set 
+    	flag = '0',
+    	update_time = NOW()
+    	where id = #{id}
+  </update>
+  <select id="countUserDefined" parameterType="map" resultType="int">
+  		select count(id) from tb_search_defined
+  		where user_id = #{userId}
+  			and (name = #{name} or url = #{url})
+  			and flag='1'
+  </select>
+  <!-- 模块 -->
+  <select id="queryModule" parameterType="java.lang.String" resultType="com.jws.app.operater.model.Module">
+  	SELECT s.id, s.code, s.`name`, ifnull(c.id,'') flag
+			FROM tb_module s LEFT JOIN 
+				(SELECT id, source_id
+				FROM tb_config
+				WHERE user_id = #{userId} and flag = '1' and type='1'
+				) c
+			ON s.id = c.source_id
+		WHERE s.delete_flag = '1'
+	ORDER BY s.id ASC  
+  </select>
+</mapper>

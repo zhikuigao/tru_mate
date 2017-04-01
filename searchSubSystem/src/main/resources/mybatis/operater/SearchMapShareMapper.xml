@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.SearchMapShareMapper" >
+  <resultMap id="BaseResultMap" type="com.jws.app.operater.model.SearchMapShare" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="map_id" property="mapId" jdbcType="VARCHAR" />
+    <result column="first_keyword" property="firstKeyword" jdbcType="VARCHAR" />
+    <result column="share_device" property="shareDevice" jdbcType="VARCHAR" />
+    <result column="share_to" property="shareTo" jdbcType="VARCHAR" />
+    <result column="thumbnail_url" property="thumbnailUrl" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List" >
+    id, user_id, map_id, first_keyword, share_device, share_to, thumbnail_url, create_time
+  </sql>
+  
+  <insert id="insert" parameterType="com.jws.app.operater.model.SearchMapShare" >
+    insert into tb_search_maps_share (user_id, map_id, 
+      first_keyword, share_device, share_to,pic_url, thumbnail_url, create_time)
+    values (#{userId}, #{mapId}, #{firstKeyword}, #{shareDevice}, #{shareTo}, #{picUrl},
+      #{thumbnailUrl}, NOW())
+  </insert>
+  <select id="queryShareByPage" parameterType="com.jws.app.operater.model.SearchMapShare" resultMap="BaseResultMap">
+  	select share.*
+  		from  	(select  <include refid="Base_Column_List"/>
+				  	from tb_search_maps_share
+				  	where user_id = #{userId}
+				  	order by  id  desc) share
+		<where>
+		<if test="null != firstTime">
+			and share.create_time &lt; #{firstTime}
+		</if>
+		</where>
+	  limit #{pageFrom} , #{pageNum}
+  </select>
+  
+  <select id="getTotalNumber" parameterType="map" resultType="int">
+  	select count(id)
+  	from  	tb_search_maps_share 
+	<where>
+		<if test="null != userId">
+			and user_id = #{userId}
+		</if>
+		<if test="null != firstTime">
+			and create_time &lt; #{firstTime}
+		</if>
+	</where>
+  </select>
+</mapper>

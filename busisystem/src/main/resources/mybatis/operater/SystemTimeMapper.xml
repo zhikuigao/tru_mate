@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.SystemTimeMapper" >
+
+	<select id="getSystemTime" resultType="date">
+		select now()
+	</select>
+		<select id="getYesterday" resultType="date">
+		select date_sub(curdate(),interval 1 day)
+	</select>
+
+</mapper>

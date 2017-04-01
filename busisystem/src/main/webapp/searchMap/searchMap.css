@@ -1,0 +1,91 @@
+@charset "utf-8";
+body,div,ol,ul,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,p,form,fieldset,legend,input,hr,span{margin:0; padding:0;}
+h1,h2,h3,h4,h5,h6{ font-size:100%; font-weight:normal;}
+ol,ul{ list-style:none;}
+/*,"Times New Roman", Times, serif,"宋体"*/
+body{
+    font-family:"微软雅黑","Microsoft YaHei";
+    position: relative;
+    overflow: hidden;
+}
+
+*{
+    cursor:default;
+//禁用文本选择
+-moz-user-select:none;
+    -webkit-user-select:none;
+    user-select:none;
+}
+
+input[type=text], input[type=password],textarea{
+    cursor: text;
+}
+.clickContent{
+    cursor:pointer;
+}
+.noneBut{
+    outline: none;
+    background-color:transparent;
+    border:0px;
+}
+.hiddeninfo, .hiddenInfo{
+    display: none;
+}
+
+#mateContent{
+    position: relative;
+    width: 388px;
+    height: 558px;
+    box-sizing: border-box;
+}
+
+#globalPrompt,#ajaxGlobalPrompt{
+    position: absolute;
+    width: 246px;
+    height: 51px;
+    margin: 0 auto;
+    top: 450px;
+    left: 71px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: #6e6e6e;
+    color: #ffffff;
+    border: 1px solid #666666;
+    text-align: center;
+    line-height: 49px;
+    -webkit-box-shadow: 0 0  9px  rgba(86,79,79,.75);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mapcenter{ padding-top: 20px; height:440px;}
+.maplistbox{ height: 150px; padding-left: 104px;margin-bottom: 15px;}
+.maplistbox.fir{ padding-left: 0;}
+.maplistbox>div{float: left; position: relative; height: 150px;}
+.maplistbox>div>i{position: absolute; border-radius: 3px; background: #e0e0e0;}
+.maplistbox>div>i.heng{ width: 22px; height: 3px; z-index: 2; top: 75px; }
+.maplistbox>div.maptitle>i.heng{right: -7px;}
+.maplistbox>div.browse>i.heng{left: 0px;}
+.maplistbox>div i.shu{ width: 3px; height: 60px; left: 50%; margin-left: -1px; bottom: -40px;}
+.maplistbox:last-child>div i.shu{display: none;}
+.maptitle{ width: 104px; text-align: center;}
+.maptitle span{font-size: 14px; display: inline-block; width: 70px; height: 70px; color: #fff; border-radius: 35px; background: #5fadff; text-align: center; line-height: 70px; margin-top: 40px;}
+.keyword{ width: 168px; text-align: center;}
+.keyword a{display: inline-block; color: #fff; font-size: 14px; cursor: pointer; border-radius: 4px;margin-top:58px; min-width: 34px; max-width: 128px; padding: 0 10px; height: 36px; line-height: 36px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-decoration: none; background: #5fadff;}
+.keyword a span{float: right; margin-left: 5px;}
+.keyword a:hover{ background: #8dc5ff;}
+.keyword a:active{ background:#5fadff;}
+.maplistbox>div.browse{ background: url("img/keybg.png") no-repeat 30px 1px; padding-left: 54px;overflow: hidden; height: 134px; margin-top: 8px;}
+.browse ul{margin-top:-9px;}
+.browse li i{display: inline-block; vertical-align: top; width: 8px; height: 8px; border-radius: 4px;background: #5fadff; margin: 12px 6px 0 0;}
+.browse li{ line-height: 30px;height:30px;  width: 450px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
+.browse li a{ font-size: 14px; text-decoration: none; cursor: pointer; color: #000;}
+.browse li a:hover{color: #8dc5ff; text-decoration: underline;}
+
+.fexPage{ position: absolute; width: 12px; top:0; right: 0; display: none;}
+.fexPage a{ display: block;color:#fff; cursor: pointer; width: 12px; height: 12px;border-radius: 6px; font-size: 12px; background: #8dc5ff; text-align: center; line-height: 12px;}
+.fexPage a:hover,.fexPage a.curr{background: #5fadff;}
+
+
+

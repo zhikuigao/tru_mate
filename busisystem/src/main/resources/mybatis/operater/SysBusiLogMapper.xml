@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.SysBusiLogMapper" >
+ 
+  <insert id="logInsertSelective" parameterType="com.jws.app.operater.model.SysBusiLog" >
+    insert into tb_sys_busi_log (id, 
+    <if test="null != source">
+    	source, 
+    </if>  
+      <if test="null != receive">
+    	receive, 
+    </if>   
+    request,   create_time)
+   	values (#{id}, 
+	   	<if test="null != source">
+	    	#{source}, 
+	    </if>
+	     <if test="null != receive">
+    	#{receive},  
+   	 </if>
+    	#{request},  NOW()
+      )
+  </insert>
+  
+  <update id="logUpdateByPrimaryKey" parameterType="com.jws.app.operater.model.SysBusiLog" >
+    update tb_sys_busi_log 
+      set     
+      		<if test="null != source">
+		    	source = #{source}, 
+		    </if> 
+		      update_time = NOW(),
+		      response = #{response}
+      where  id = #{id}
+  </update>
+ 
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<project name="searchsystem" basedir="." default="makewar">  
+
+    <property name="classpath_lib" value="${basedir}/build/destination/webapp/WEB-INF/lib" />  
+	
+    <property name="sources" value="${basedir}/src"/>    
+
+    <path id="classpath">    
+
+        <fileset dir="${classpath_lib}">    
+
+            <include name="*.jar"/>    
+
+        </fileset>    
+
+    </path>    
+
+    <target name="init">  
+    	<delete dir="${basedir}/build" /> 
+        <property name="build" value="build/destination/webapp"></property>  
+
+        <property name="src" value="src"></property>  
+
+        <mkdir dir="${build}"/>  
+
+        <mkdir dir="${build}\WEB-INF"/>  
+
+        <mkdir dir="${build}\WEB-INF\classes"/>  
+
+        <mkdir dir="${build}\WEB-INF\lib"/>  
+
+        <copy todir="${build}">  
+        	 <fileset dir="${basedir}/src/main/webapp"> 
+            	<include name="**/**.*" />  
+                <exclude name="**/*.jar"/>  
+                <exclude name="**/*.class"/>
+            </fileset>
+        </copy>
+    	<copy todir="${build}\WEB-INF\classes">  
+            <fileset dir="${basedir}/src/main/resources"> 
+            	<include name="**/**.*" />  
+                <exclude name="**/*.jar"/>  
+                <exclude name="**/*.class"/>
+            </fileset>
+        </copy>  
+    	
+    	<copy todir="${build}\WEB-INF\lib">  
+    	            <fileset dir="${basedir}/src/main/webapp/WEB-INF/lib"> 
+    	            	<include name="**/**.*" />  
+    	            </fileset>
+    	        </copy>  
+
+    </target>  
+
+    <target name="complie" depends="init">    
+        <javac srcdir="${src}" destdir="${build}/WEB-INF/classes"  encoding="UTF-8" >  
+        	 <classpath refid="classpath" />  
+        	  <compilerarg value="-Xlint:unchecked"/>
+        </javac>  
+    </target>  
+
+    <target name="makewar" depends="complie">  
+        <!-- 删除原有war包。 -->  
+        <delete dir="${basedir}/busisystem.war" /> 
+		<!-- 打war包  -->
+        <war warfile="${basedir}/busisystem.war" webxml="${build}/WEB-INF/web.xml"> 
+        	
+        <classes dir="${build}/WEB-INF/classes"/>  
+
+        <fileset dir="${build}"/>  
+
+        </war> 
+    	<!--删除临时文件夹 -->
+    	<!-- 	<delete dir="${basedir}/build" /> -->
+    </target>  
+
+</project>  

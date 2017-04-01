@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.AppVoteMapper" >
+  <resultMap id="BaseResultMap" type="com.jws.app.operater.model.AppVote" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="user_id" property="userId" jdbcType="CHAR" />
+    <result column="app_id" property="appId" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, user_id, app_id, create_time, update_time
+  </sql>
+  
+  <insert id="saveAppVote" parameterType="com.jws.app.operater.model.AppVote">
+    insert into tb_app_vote ( id, user_id, app_id, create_time, update_time )
+    value(#{id,jdbcType=CHAR}, #{userId,jdbcType=CHAR}, #{appId,jdbcType=CHAR}, NOW(), NOW())
+  </insert>
+  
+  <select id="queryAppVoteId" resultType="java.lang.String">
+  	SELECT id
+  	FROM tb_app_vote
+  	WHERE app_id=#{appId} AND user_id=#{userId}
+  </select>
+  
+</mapper>

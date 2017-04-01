@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.SearchMapsMapper" >
+  <resultMap id="BaseResultMap" type="com.jws.app.operater.model.SearchMaps" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="first_keyword" property="firstKeyword" jdbcType="VARCHAR" />
+    <result column="map_pc_url" property="mapPcUrl" jdbcType="VARCHAR" />
+    <result column="map_mobile_url" property="mapMobileUrl" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="search_source" property="source" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="barCodeMap" extends="BaseResultMap" type="com.jws.app.operater.model.SearchMaps">
+  	<result column="bar_code_url" property="barCodeUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMap2" type="com.jws.app.operater.model.SearchMapsData" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="keyword_id" property="keywordId" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+     <result column="keep_flag" property="keepFlag" jdbcType="VARCHAR" />
+  </resultMap>
+  
+    <resultMap id="BaseResultMap3" type="com.jws.app.operater.model.SearchMapsKeyword" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+    <result column="map_id" property="mapId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+     <result column="source" property="source" jdbcType="VARCHAR" />
+  </resultMap>
+  
+    <resultMap id="BaseResultMap4" type="com.jws.app.operater.model.SearchMapsKeywordNode" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title_id" property="titleId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <!--根据id查询信息 -->
+  <select id="queryMapById" parameterType="string" resultMap="barCodeMap">
+  		select  id, user_id, first_keyword, map_pc_url, map_mobile_url,bar_code_url, create_time 
+  		from  tb_search_maps
+  		where id = #{id}
+  </select>
+  
+   <select id="querySearchMapsIstrue" resultType="int" parameterType="String">
+  			SELECT COUNT(*) FROM tb_search_maps WHERE id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  
+       <select id="querySearchMapKeywordsIstrue" resultType="int" parameterType="String">
+  			SELECT COUNT(*) FROM tb_search_maps_keys_word WHERE id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+    <insert id="insert" parameterType="com.jws.app.operater.model.SearchMaps" >
+    insert into tb_search_maps (id, user_id, first_keyword, 
+      map_pc_url, map_mobile_url, create_time,search_source
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{firstKeyword,jdbcType=VARCHAR}, 
+      #{mapPcUrl,jdbcType=VARCHAR}, #{mapMobileUrl,jdbcType=VARCHAR}, NOW(),#{source,jdbcType=VARCHAR} )
+  </insert>
+  
+    <insert id="insertSearchMapsData" parameterType="com.jws.app.operater.model.SearchMapsData" >
+    insert into tb_search_maps_data (id, keyword_id, title, 
+      url, create_time)
+    values (#{id,jdbcType=INTEGER}, #{keywordId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <update id="updateSearchDataFlag" parameterType="com.jws.app.operater.model.SearchMapsData">
+  	update tb_search_maps_data
+  	set keep_flag = #{keepFlag},
+  		flag_time = NOW()
+  	where id = #{id}
+  </update>
+  
+    <insert id="insertSearchMapsKeyword" parameterType="com.jws.app.operater.model.SearchMapsKeyword" >
+    insert into tb_search_maps_keys_word (id, keyword, map_id, 
+      create_time,source)
+    values (#{id,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR}, #{mapId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{source,jdbcType=VARCHAR})
+  </insert>
+  
+  <select id="queryHistoryMaps"  resultMap="BaseResultMap" parameterType="map">
+  		SELECT * FROM tb_search_maps WHERE user_id = #{userid,jdbcType=VARCHAR} 
+  		 <if test="key != null">
+  		AND first_keyword LIKE #{key,jdbcType=VARCHAR}
+  		</if>
+  		ORDER BY create_time DESC LIMIT #{page,jdbcType=INTEGER},#{pageNum,jdbcType=INTEGER}
+  </select>
+  
+    <select id="queryHistoryMapsCount"  resultType="int" parameterType="map">
+  		SELECT COUNT(*) FROM tb_search_maps WHERE user_id = #{userid,jdbcType=VARCHAR} 
+  		 <if test="key != null">
+  		AND first_keyword LIKE #{key,jdbcType=VARCHAR}
+  		</if>
+  </select>
+  
+    <select id="queryMaps"  resultMap="BaseResultMap" parameterType="String">
+  			SELECT * FROM tb_search_maps WHERE id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+      <select id="queryKeyWords"  resultMap="BaseResultMap3" parameterType="String">
+  		SELECT * FROM tb_search_maps_keys_word WHERE map_id = #{id,jdbcType=VARCHAR} 
+  		order by create_time asc
+  </select>
+  
+   <select id="queryDatas"  resultMap="BaseResultMap2" parameterType="String">
+   		SELECT * from 
+		(SELECT id,keyword_id,title,url,flag_time as create_time ,keep_flag  FROM tb_search_maps_data 
+   			WHERE keyword_id = #{id} and keep_flag = '1'
+  		order by flag_time desc) a
+   		union all  SELECT * from 
+  		(SELECT id ,keyword_id,title,url,create_time , keep_flag  FROM tb_search_maps_data 
+  			WHERE keyword_id = #{id} and keep_flag = '0'
+  		order by id desc ) b ;
+  </select>
+  
+       <select id="queryDatasSimple"  resultMap="BaseResultMap2" parameterType="String">
+  		SELECT * from 
+		(SELECT id,keyword_id,title,url,flag_time as create_time ,keep_flag  FROM tb_search_maps_data 
+   			WHERE keyword_id = #{id} and keep_flag = '1'
+  		order by flag_time desc) a
+   		union all  SELECT * from 
+  		(SELECT id ,keyword_id,title,url,create_time , keep_flag  FROM tb_search_maps_data 
+  			WHERE keyword_id = #{id} and keep_flag = '0'
+  		order by id desc ) b
+  		LIMIT #{page,jdbcType=INTEGER},#{pageNum,jdbcType=INTEGER}
+  </select>
+  
+   <select id="queryDatasCount"  resultType="int" parameterType="String">
+  		SELECT COUNT(*) FROM tb_search_maps_data WHERE keyword_id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+     <select id="queryDataIsTrue"  resultType="int" parameterType="map">
+  		SELECT COUNT(*) FROM tb_search_maps_data WHERE keyword_id = #{id,jdbcType=VARCHAR} AND url = #{url,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="querySearchLikeKeyword"  resultMap="BaseResultMap3" parameterType="map">
+  		SELECT DISTINCT keyword FROM tb_search_maps_keys_word WHERE keyword LIKE #{keyword,jdbcType=VARCHAR} AND map_id IN (SELECT id FROM tb_search_maps WHERE user_id = #{userid,jdbcType=VARCHAR}) ORDER BY create_time DESC LIMIT 0,5
+  </select>
+  
+    <select id="querySearchMapsSameKeyWords"  resultType="com.jws.app.operater.model.SearchMapsKeyword" parameterType="map">
+  		SELECT * FROM tb_search_maps_keys_word WHERE map_id = #{mapId,jdbcType=VARCHAR} ORDER BY create_time DESC LIMIT 0,1
+    </select>
+    
+       <select id="querySearchMapsKeyWords"  resultMap="BaseResultMap3" parameterType="map">
+					SELECT * FROM tb_search_maps_keys_word WHERE map_id = #{mapId,jdbcType=VARCHAR} ORDER BY create_time asc 
+    </select>
+    
+     <select id="querySearchMapsKeyWordsNodes"  resultMap="BaseResultMap4" parameterType="map">
+			SELECT * FROM tb_search_maps_word_node WHERE title_id =  #{titleId,jdbcType=VARCHAR}
+    </select>
+    
+     <insert id="insertNodes" parameterType="com.jws.app.operater.model.SearchMapsKeywordNode" >
+	    insert into tb_search_maps_word_node (id, title_id, title, 
+	      url, create_time)
+	    values (#{id,jdbcType=INTEGER}, #{titleId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+	      #{url,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+   <select id="querySearchMapsKeyWordsNodesCount"  resultType="int" parameterType="map">
+		SELECT COUNT(*) from tb_search_maps_word_node WHERE title_id = #{titleId,jdbcType=VARCHAR} AND url =  #{url,jdbcType=VARCHAR}
+    </select>
+  
+  <select id="queryOldMapBySameKey" parameterType="map" resultType="com.jws.app.operater.model.SearchMapRecommend">
+  	SELECT m.id, m.first_keyword firstKeyword, k.id keywordId, m.create_time createTime
+  	from tb_search_maps m
+	join tb_search_maps_keys_word k
+		on m.id = k.map_id
+	where m.user_id = #{userId}	and k.keyword = #{keyword}	ORDER BY m.create_time DESC
+  </select>
+  <select id="countFlaggedMapData" parameterType="string" resultType="int">
+  		select count(id) from tb_search_maps_data
+  		where keyword_id = #{keywordId}
+  		and keep_flag = '1'
+  </select>
+  
+</mapper>

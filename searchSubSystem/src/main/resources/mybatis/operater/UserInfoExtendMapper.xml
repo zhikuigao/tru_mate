@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jws.app.operater.data.UserInfoExtendMapper" >
+  <resultMap id="BaseResultMap" type="com.jws.app.operater.model.UserInfoExtend" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="version_pc" property="versionPc" jdbcType="VARCHAR" />
+    <result column="version_android" property="versionAndroid" jdbcType="VARCHAR" />
+    <result column="version_ios" property="versionIos" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <!-- 用户扩展信息tb_user_info_extend  start -->
+  <select id="queryUserExtend" parameterType="string" resultMap="BaseResultMap">
+  	select * from mate_user.tb_user_info_extend where user_id = #{userId}
+  </select>
+  <update id="updateUserExtend" parameterType="com.jws.app.operater.model.UserInfoExtend">
+  	update  mate_user.tb_user_info_extend
+  	set update_time = NOW()
+  	<if test="null != record.versionPc">
+  		,version_pc = #{record.versionPc}
+  	</if>
+  	<if test="null != record.versionAndroid">
+  		,version_android = #{record.versionAndroid}
+  	</if>
+  	<if test="null != record.versionIos">
+  		,version_ios = #{record.versionIos}
+  	</if>
+  	where user_id = #{record.userId}
+  </update>
+  <insert id="insertUserExtend" parameterType="com.jws.app.operater.model.UserInfoExtend">
+  	 insert into mate_user.tb_user_info_extend 
+  	 <trim prefix="(" suffix=")" suffixOverrides="," >
+      user_id,
+      <if test="record.versionPc != null" >
+        version_pc,
+      </if>
+      <if test="record.versionAndroid != null" >
+        version_android,
+      </if>
+      <if test="record.versionIos != null" >
+        version_ios,
+      </if>
+       create_time
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+    	#{record.userId},
+      <if test="record.versionPc != null" >
+        #{record.versionPc},
+      </if>
+      <if test="record.versionAndroid != null" >
+        #{record.versionAndroid},
+      </if>
+      <if test="record.versionIos != null" >
+        #{record.versionIos},
+      </if>
+      NOW()
+    </trim>
+  </insert>
+  <!-- 用户扩展信息tb_user_info_extend end -->
+</mapper>
